@@ -449,10 +449,9 @@ public class ClientConnection implements Runnable {
                                     break;
                                 }
                             }
--                            if (state < 4) {
-+                            if (state < 4 || clientIp.isEmpty() || bungee.isEmpty()) {
+                            if (state < 4 || clientIp.isEmpty() || bungee.isEmpty()) {
                                  throw new IllegalStateException("Incomplete bungee forwarding data: " + state);
-                             }
+                            }
                             
                             if (skinData.isEmpty()) {
                                 skinData = "[]";
