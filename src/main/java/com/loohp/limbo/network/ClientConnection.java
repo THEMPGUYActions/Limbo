@@ -425,31 +425,20 @@ public class ClientConnection implements Runnable {
                                     host = data[i];
                                     state = 1;
                                     break;
-@@
--                                case 1:
--                                    if (data[i].startsWith("^Floodgate^")) {
--                                        floodgate = data[i];
--                                        state = 2;
--                                        
--                                    }
--                                    /* fallthrough */
--                                case 2:
--                                    clientIp = data[i];
--                                    state = 3;
--                                    break;
-+                                case 1:
-+                                    if (data[i].startsWith("^Floodgate^")) {
-+                                        floodgate = data[i];
-+                                        state = 2;
-+                                        break;
-+                                    }
-+                                    clientIp = data[i];
-+                                    state = 3;
-+                                    break;
-+                                case 2:
-+                                    clientIp = data[i];
-+                                    state = 3;
-+                                    break;
+
+                                 case 1:
+                                     if (data[i].startsWith("^Floodgate^")) {
+                                         floodgate = data[i];
+                                         state = 2;
+                                         break;
+                                     }
+                                     clientIp = data[i];
+                                     state = 3;
+                                     break;
+                                 case 2:
+                                     clientIp = data[i];
+                                     state = 3;
+                                     break;
                                 case 3:
                                     bungee = data[i];
                                     state = 4;
