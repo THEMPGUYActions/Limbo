@@ -405,7 +405,7 @@ public class ClientConnection implements Runnable {
 
                     if (isBungeecord || isBungeeGuard) {
                         try {
-                            String[] data = bungeeForwarding.split("\\x00");
+                            String[] data = bungeeForwarding.split("\u0000");
                             String host = "";
                             String floodgate = "";
                             String clientIp = "";
@@ -425,17 +425,31 @@ public class ClientConnection implements Runnable {
                                     host = data[i];
                                     state = 1;
                                     break;
-                                case 1:
-                                    if (data[i].startsWith("^Floodgate^")) {
-                                        floodgate = data[i];
-                                        state = 2;
-                                        break;
-                                    }
-                                    /* fallthrough */
-                                case 2:
-                                    clientIp = data[i];
-                                    state = 3;
-                                    break;
+@@
+-                                case 1:
+-                                    if (data[i].startsWith("^Floodgate^")) {
+-                                        floodgate = data[i];
+-                                        state = 2;
+-                                        
+-                                    }
+-                                    /* fallthrough */
+-                                case 2:
+-                                    clientIp = data[i];
+-                                    state = 3;
+-                                    break;
++                                case 1:
++                                    if (data[i].startsWith("^Floodgate^")) {
++                                        floodgate = data[i];
++                                        state = 2;
++                                        break;
++                                    }
++                                    clientIp = data[i];
++                                    state = 3;
++                                    break;
++                                case 2:
++                                    clientIp = data[i];
++                                    state = 3;
++                                    break;
                                 case 3:
                                     bungee = data[i];
                                     state = 4;
@@ -446,8 +460,13 @@ public class ClientConnection implements Runnable {
                                     break;
                                 }
                             }
-                            if (state != 6) {
-                                throw new IllegalStateException("Illegal bungee state: " + state);
+-                            if (state < 4) {
++                            if (state < 4 || clientIp.isEmpty() || bungee.isEmpty()) {
+                                 throw new IllegalStateException("Incomplete bungee forwarding data: " + state);
+                             }
+                            
+                            if (skinData.isEmpty()) {
+                                skinData = "[]";
                             }
 
                             if (!properties.isReducedDebugInfo()) {
