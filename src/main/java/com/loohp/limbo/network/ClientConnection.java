@@ -405,7 +405,7 @@ public class ClientConnection implements Runnable {
 
                     if (isBungeecord || isBungeeGuard) {
                         try {
-                            String[] data = bungeeForwarding.split("\u0000");
+                            String[] data = bungeeForwarding.split("\u0000", -1);
                             String host = "";
                             String floodgate = "";
                             String clientIp = "";
